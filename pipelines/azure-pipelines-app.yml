@@ -1,0 +1,50 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  acrName: 'ramsacrdev123'
+  imageName: 'secure-webapp'
+  webAppName: 'ramsdevapp-web'
+  resourceGroup: 'rg-container-dev'
+
+stages:
+
+- stage: Build_and_Push
+  jobs:
+  - job: BuildPush
+    steps:
+    - checkout: self
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'sc-azure-subscription-dev'
+        repository: '$(imageName)'
+        command: 'buildAndPush'
+        Dockerfile: 'app/Dockerfile'
+        tags: |
+          latest
+
+- stage: Deploy_App
+  dependsOn: Build_and_Push
+  jobs:
+  - job: Deploy
+    steps:
+    - checkout: self
+
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'sc-azure-subscription-dev'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az webapp config container set \
+            --name $(webAppName) \
+            --resource-group $(resourceGroup) \
+            --container-image-name $(acrName).azurecr.io/$(imageName):latest
+
+          az webapp restart \
+            --name $(webAppName) \
+            --resource-group $(resourceGroup)
