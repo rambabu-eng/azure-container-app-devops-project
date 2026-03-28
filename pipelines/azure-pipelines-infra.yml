@@ -1,0 +1,51 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  resourceGroup: 'rg-container-dev'
+  location: 'australiaeast'
+  templateFile: 'infra/main.bicep'
+  parametersFile: 'infra/parameters/dev.parameters.json'
+
+stages:
+
+# -----------------------
+# Stage 1: Validate
+# -----------------------
+- stage: Validate
+  jobs:
+  - job: ValidateBicep
+    steps:
+    - checkout: self
+
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'sc-azure-subscription-dev'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az bicep build --file $(templateFile)
+
+# -----------------------
+# Stage 2: Deploy Dev
+# -----------------------
+- stage: Deploy_Dev
+  dependsOn: Validate
+  jobs:
+  - job: DeployBicep
+    steps:
+    - checkout: self
+
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'sc-azure-subscription-dev'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az deployment group create \
+            --resource-group $(resourceGroup) \
+            --template-file $(templateFile) \
+            --parameters @$(parametersFile)
