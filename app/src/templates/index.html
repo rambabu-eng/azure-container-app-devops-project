@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fb;
+            color: #1f2937;
+            text-align: center;
+            padding-top: 80px;
+        }
+        .card {
+            background: white;
+            width: 60%;
+            margin: auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2563eb;
+        }
+        p {
+            font-size: 18px;
+        }
+        .badge {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 18px;
+            background: #2563eb;
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>{{ app_name }}</h1>
+        <p><strong>Environment:</strong> {{ environment }}</p>
+        <p><strong>Version:</strong> {{ version }}</p>
+        <p>Containerised Azure web application running successfully.</p>
+        <div class="badge">Docker + Azure DevOps + ACR + App Service</div>
+    </div>
+</body>
+</html>
