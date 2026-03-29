@@ -35,6 +35,14 @@
             border-radius: 20px;
             font-size: 14px;
         }
+        .secret {
+            margin-top: 20px;
+            padding: 12px;
+            background: #eef2ff;
+            border-radius: 10px;
+            color: #111827;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -44,6 +52,7 @@
         <p><strong>Version:</strong> {{ version }}</p>
         <p>Containerised Azure web application running successfully.</p>
         <div class="badge">Docker + Azure DevOps + ACR + App Service</div>
+        <div class="secret">Key Vault Secret: {{ secret }}</div>
     </div>
 </body>
 </html>
