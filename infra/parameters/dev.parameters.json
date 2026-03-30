@@ -7,6 +7,42 @@
     },
     "acrName": {
       "value": "ramsacrdev123"
+    },
+    "vnetName": {
+      "value": "vnet-app-dev"
+    },
+    "vnetAddressPrefix": {
+      "value": "10.10.0.0/16"
+    },
+    "appIntegrationSubnetName": {
+      "value": "snet-app-integration"
+    },
+    "appIntegrationSubnetPrefix": {
+      "value": "10.10.1.0/24"
+    },
+    "privateEndpointSubnetName": {
+      "value": "snet-private-endpoints"
+    },
+    "privateEndpointSubnetPrefix": {
+      "value": "10.10.2.0/24"
+    },
+    "sqlServerName": {
+      "value": "ramssqlsrvdev123"
+    },
+    "sqlDatabaseName": {
+      "value": "appdb"
+    },
+    "sqlAdminLogin": {
+      "value": "sqladminram"
+    },
+    "sqlAdminPassword": {
+      "value": "ramssqldb@1985"
+    },
+    "privateEndpointName": {
+      "value": "pe-sql-dev"
+    },
+    "privateDnsZoneName": {
+      "value": "privatelink.database.windows.net"
     }
   }
 }
