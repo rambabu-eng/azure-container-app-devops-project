@@ -1,23 +1,34 @@
 from flask import Flask, render_template, jsonify
-from mssql_python import connect
 import os
 
 app = Flask(__name__)
 
-def get_db_connection():
-    server = os.getenv("SQL_SERVER")
-    database = os.getenv("SQL_DATABASE")
-    username = os.getenv("SQL_USER")
-    password = os.getenv("SQL_PASSWORD")
+@app.route("/")
+def home():
+    app_name = os.getenv("APP_NAME", "Secure Containerised Web App")
+    environment = os.getenv("ENVIRONMENT", "Development")
+    version = os.getenv("APP_VERSION", "v1")
+    secret = os.getenv("MY_SECRET", "No Secret Found")
+    db_status = "SQL integration temporarily disabled for troubleshooting"
 
-    conn_str = (
-        f"Driver={{ODBC Driver 18 for SQL Server}};"
-        f"Server=tcp:{server},1433;"
-        f"Database={database};"
-        f"Uid={username};"
-        f"Pwd={password};"
-        f"Encrypt=yes;"
-        f"TrustServerCertificate=no;"
-        f"Connection Timeout=30;"
+    return render_template(
+        "index.html",
+        app_name=app_name,
+        environment=environment,
+        version=version,
+        secret=secret,
+        db_status=db_status
     )
-    return connect(conn_str)
+
+@app.route("/health")
+def health():
+    return jsonify({"status": "healthy"}), 200
+
+@app.route("/secret")
+def get_secret():
+    return jsonify({
+        "secret_value": os.getenv("MY_SECRET", "No Secret Found")
+    }), 200
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8000)
